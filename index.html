@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --surface:#F6F6F6; --ink:#2B2B2B; --muted:#6f6a74; --line:#e6e6e6;
+  --violet-a:#3D3351; --violet-b:#71638A; --accent:#9245a8; --lav-soft:#f3ecf7;
+  --serif:"Inria Serif", Georgia, "Times New Roman", serif;
+  --sans:"Jost", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#1c1a20; --surface:#252229; --ink:#efeaf2; --muted:#a59fab; --line:#3a3540; --lav-soft:#2e2836; --accent:#d6b0e8; color-scheme:dark; }
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+.mast{background:linear-gradient(90deg,var(--violet-a),var(--violet-b));color:#fff;padding:calc(40px + env(safe-area-inset-top,0px)) 0 38px}
+.label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:400;display:flex;align-items:center;gap:12px}
+.label::after{content:"";height:1px;width:40px;background:currentColor;opacity:.5}
+.mast h1{font-family:var(--serif);font-weight:300;font-size:clamp(34px,6vw,56px);line-height:1.06;margin:16px 0 10px;letter-spacing:-.01em}
+.mast p{margin:0;max-width:56ch;opacity:.88}
+.sparkle{width:14px;height:14px;fill:currentColor;flex:none}
+
+.posts{padding:8px 0 150px}
+.post{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:48px;padding:48px 0;border-bottom:1px solid var(--line)}
+.post:last-child{border-bottom:0}
+@media (max-width:760px){.post{grid-template-columns:1fr;gap:22px;padding:34px 0}}
+
+.car{position:relative}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--surface);aspect-ratio:4/5}
+.track::-webkit-scrollbar{display:none}
+.track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:start;display:block}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#2B2B2B;cursor:pointer;display:grid;place-items:center;box-shadow:0 1px 6px rgba(43,43,43,.18);font-size:20px;line-height:1}
+.nav.prev{left:10px}.nav.next{right:10px}.nav[hidden]{display:none}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--violet-b)}
+.count{position:absolute;top:10px;right:10px;background:rgba(43,43,43,.6);color:#fff;font-size:12px;padding:2px 9px;border-radius:999px}
+
+.meta .label{color:var(--muted)}
+.meta h2{font-family:var(--serif);font-weight:300;font-size:clamp(27px,3.4vw,38px);line-height:1.15;margin:12px 0 18px}
+.caption{white-space:pre-wrap;font-size:15.5px;max-width:62ch}
+.caption.clamp{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.more{background:none;border:0;padding:0;margin-top:6px;color:var(--accent);cursor:pointer;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+
+.decide{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.choices{display:flex;gap:10px;flex-wrap:wrap}
+.choice{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:11px 22px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:400;transition:background .15s,border-color .15s,color .15s}
+.choice:hover{border-color:var(--violet-b)}
+.choice.approve[aria-pressed="true"]{background:linear-gradient(90deg,var(--violet-a),var(--violet-b));border-color:transparent;color:#fff}
+.choice.changes[aria-pressed="true"]{background:var(--lav-soft);border-color:var(--accent);color:var(--accent)}
+.notes{margin-top:16px;display:block}
+.notes span{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.notes textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:12px 14px;line-height:1.5}
+.saved{font-size:13px;color:var(--muted);margin-top:8px;min-height:1.4em}
+
+.lock{min-height:100vh;display:grid;place-items:center;text-align:center;padding:40px 24px}
+.lock h1{font-family:var(--serif);font-weight:300;font-size:34px;margin:16px 0 8px}
+.lock p{color:var(--muted);margin:0;max-width:40ch}
+.lock .sparkle{width:22px;height:22px;color:var(--violet-b)}
+
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));z-index:5}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.prog{font-size:14px;color:var(--muted)}
+.prog b{font-weight:500;color:var(--ink)}
+.btn{border:0;border-radius:999px;padding:12px 24px;background:linear-gradient(90deg,var(--violet-a),var(--violet-b));color:#fff;cursor:pointer;font-weight:400;text-decoration:none;display:inline-block}
+.btn:disabled{opacity:.5;cursor:default}
+
+.done{padding:90px 0 140px;text-align:center}
+.done h2{font-family:var(--serif);font-weight:300;font-size:clamp(30px,5vw,44px);margin:16px 0 10px}
+.done p{color:var(--muted);margin:0 auto;max-width:46ch}
+.done .sparkle{width:22px;height:22px;color:var(--violet-b)}
+.linkish{background:none;border:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer;margin-top:22px;padding:0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="spk" viewBox="0 0 24 24"><path d="M12 0c.6 6.2 5.8 11.4 12 12-6.2.6-11.4 5.8-12 12-.6-6.2-5.8-11.4-12-12C6.2 11.4 11.4 6.2 12 0z"/></symbol></svg>
+
+<div id="app">
+  <div class="lock"><div><svg class="sparkle"><use href="#spk"/></svg><h1>Opening your review</h1><p>One moment.</p></div></div>
+</div>
+
+<script>
+(function(){
+  const app=document.getElementById("app");
+  const S={data:null, dec:{}, roundId:"", sending:false};
+
+  function b64u(s){ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4) s+="="; return Uint8Array.from(atob(s),c=>c.charCodeAt(0)); }
+  function esc(s){ const d=document.createElement("div"); d.textContent=s==null?"":String(s); return d.innerHTML; }
+  function fmtDate(iso){ if(!iso) return ""; const d=new Date(iso+"T12:00:00"); return d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}); }
+  function locked(title,msg){ app.innerHTML='<div class="lock"><div><svg class="sparkle"><use href="#spk"/></svg><h1>'+esc(title)+'</h1><p>'+esc(msg)+'</p></div></div>'; }
+
+  async function open(){
+    const h=location.hash.slice(1); const dot=h.indexOf(".");
+    if(dot<1){ locked("This page is private","Open it from the link you were sent."); return; }
+    const id=h.slice(0,dot), key=h.slice(dot+1);
+    if(!/^[A-Za-z0-9_-]{6,40}$/.test(id)){ locked("This page is private","Open it from the link you were sent."); return; }
+    S.roundId=id;
+    try{
+      const res=await fetch("r/"+id+".json",{cache:"no-store"});
+      if(!res.ok) throw new Error("missing");
+      const box=await res.json();
+      const k=await crypto.subtle.importKey("raw",b64u(key),"AES-GCM",false,["decrypt"]);
+      const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64u(box.iv)},k,b64u(box.ct));
+      S.data=JSON.parse(new TextDecoder().decode(pt));
+    }catch(e){ locked("This review isn’t available","The link may be incomplete or the review may have been closed. Ask Alyssa for a fresh link."); return; }
+    document.title=S.data.name?("Review: "+S.data.name):"Review";
+    try{ S.dec=JSON.parse(localStorage.getItem("rv:"+id)||"{}"); }catch(e){}
+    render();
+    pull();
+  }
+
+  // Load saved decisions from the Sheet so another device shows the same state
+  async function pull(){
+    if(!S.data.endpoint) return;
+    try{
+      const r=await fetch(S.data.endpoint+"?round="+encodeURIComponent(S.roundId));
+      const j=await r.json();
+      if(j && j.posts){
+        Object.keys(j.posts).forEach(pid=>{
+          const remote=j.posts[pid], local=S.dec[pid];
+          if(!local || (remote.ts||"")>(local.ts||"")) S.dec[pid]=remote;
+        });
+        S.data.posts.forEach(p=>{ syncUI(p.id); const ta=document.querySelector('[data-note="'+p.id+'"]'); if(ta && document.activeElement!==ta) ta.value=(S.dec[p.id]||{}).note||""; });
+        progress();
+      }
+    }catch(e){}
+  }
+
+  async function send(payload){
+    if(!S.data.endpoint) throw new Error("no endpoint");
+    const body=JSON.stringify(payload);
+    try{ const r=await fetch(S.data.endpoint,{method:"POST",body}); if(!r.ok) throw 0; return; }
+    catch(e){ await fetch(S.data.endpoint,{method:"POST",body,mode:"no-cors"}); }
+  }
+
+  const timers={};
+  function decide(pid,patch){
+    const p=S.data.posts.find(x=>x.id===pid);
+    S.dec[pid]=Object.assign({},S.dec[pid],patch,{ts:new Date().toISOString()});
+    try{ localStorage.setItem("rv:"+S.roundId,JSON.stringify(S.dec)); }catch(e){}
+    syncUI(pid); progress();
+    setSaved(pid,"Saving");
+    clearTimeout(timers[pid]);
+    timers[pid]=setTimeout(async()=>{
+      const d=S.dec[pid];
+      try{
+        await send({round:S.roundId, roundName:S.data.name||"", post:pid, title:p.title||"", date:p.date||"", type:p.type||"", status:d.status||"", note:d.note||"", ts:d.ts});
+        setSaved(pid,"Saved");
+      }catch(e){ setSaved(pid,"Saved on this device. It will send with your review."); }
+    },350);
+  }
+  function setSaved(pid,t){ const el=document.querySelector('[data-saved="'+pid+'"]'); if(el) el.textContent=t; }
+  function syncUI(pid){
+    const d=S.dec[pid]||{};
+    const a=document.querySelector('[data-approve="'+pid+'"]'), c=document.querySelector('[data-changes="'+pid+'"]');
+    if(a) a.setAttribute("aria-pressed",d.status==="approved");
+    if(c) c.setAttribute("aria-pressed",d.status==="changes");
+  }
+  function progress(){
+    const n=S.data.posts.length, done=S.data.posts.filter(p=>(S.dec[p.id]||{}).status).length;
+    const el=document.getElementById("prog"); if(el) el.innerHTML="<b>"+done+" of "+n+"</b> reviewed";
+  }
+
+  function render(){
+    const d=S.data;
+    let html='<header class="mast"><div class="wrap"><div class="label">S. Bayati, MD, FACS | Plastic Surgery Boutique</div>'+
+      '<h1>'+esc(d.name||"Posts for your review")+'</h1>'+
+      '<p>'+esc(d.intro||"Swipe through each post, then approve it or note anything you’d like changed. Your choices save as you go.")+'</p></div></header>'+
+      '<main class="wrap"><section class="posts" id="posts"></section></main>'+
+      '<div class="bar"><div class="wrap"><div class="prog" id="prog"></div><button class="btn" id="sendBtn">Send my review</button></div></div>';
+    app.innerHTML=html;
+    const box=document.getElementById("posts");
+    d.posts.forEach(p=>{
+      const el=document.createElement("article"); el.className="post"; el.dataset.id=p.id;
+      const slides=(p.slides||[]).map((s,i)=>'<img alt="Slide '+(i+1)+' of '+p.slides.length+'" src="'+s+'"'+(i?' loading="lazy"':'')+'>').join("");
+      el.innerHTML='<div class="car"><div class="track" tabindex="0" aria-label="Slides">'+slides+'</div><span class="count"></span>'+
+        '<button class="nav prev" aria-label="Previous slide" hidden>‹</button><button class="nav next" aria-label="Next slide" hidden>›</button><div class="dots"></div></div>'+
+        '<div class="meta"><div class="label">'+esc(p.date?fmtDate(p.date):"Date to be set")+'</div><h2>'+esc(p.title||"Untitled post")+'</h2>'+
+        '<div class="caption">'+esc(p.caption||"")+'</div><button class="more" hidden>Read full caption</button>'+
+        '<div class="decide"><div class="choices"><button class="choice approve" data-approve="'+p.id+'" aria-pressed="false"><svg class="sparkle"><use href="#spk"/></svg>Approve</button>'+
+        '<button class="choice changes" data-changes="'+p.id+'" aria-pressed="false">Needs changes</button></div>'+
+        '<label class="notes"><span>Notes for Alyssa (optional)</span><textarea data-note="'+p.id+'" placeholder="Anything to adjust, swap, or check"></textarea></label>'+
+        '<div class="saved" data-saved="'+p.id+'"></div></div></div>';
+      box.appendChild(el);
+      const cap=el.querySelector(".caption");
+      if((p.caption||"").length>320){ cap.classList.add("clamp"); const m=el.querySelector(".more"); m.hidden=false; m.onclick=()=>{ const c=cap.classList.toggle("clamp"); m.textContent=c?"Read full caption":"Show less"; }; }
+      const ta=el.querySelector("textarea"); ta.value=(S.dec[p.id]||{}).note||"";
+      let h; ta.addEventListener("input",()=>{ clearTimeout(h); h=setTimeout(()=>decide(p.id,{note:ta.value}),900); });
+      ta.addEventListener("blur",()=>{ clearTimeout(h); if(ta.value!==((S.dec[p.id]||{}).note||"")) decide(p.id,{note:ta.value}); });
+      el.querySelector("[data-approve]").onclick=()=>{ const cur=(S.dec[p.id]||{}).status; decide(p.id,{status:cur==="approved"?"":"approved"}); };
+      el.querySelector("[data-changes]").onclick=()=>{ const cur=(S.dec[p.id]||{}).status; decide(p.id,{status:cur==="changes"?"":"changes"}); if(cur!=="changes") ta.focus(); };
+      carousel(el,(p.slides||[]).length);
+      syncUI(p.id);
+    });
+    progress();
+    document.getElementById("sendBtn").onclick=finish;
+  }
+
+  function carousel(el,n){
+    const track=el.querySelector(".track"), dots=el.querySelector(".dots"), count=el.querySelector(".count"), prev=el.querySelector(".prev"), next=el.querySelector(".next");
+    if(n<=1){ count.style.display="none"; return; }
+    dots.innerHTML=Array.from({length:n},(_,i)=>'<i'+(i?'':' class="on"')+'></i>').join("");
+    const idx=()=>Math.round(track.scrollLeft/track.clientWidth);
+    const upd=()=>{ const i=idx(); count.textContent=(i+1)+" / "+n; [...dots.children].forEach((d,j)=>d.classList.toggle("on",j===i)); prev.hidden=i===0; next.hidden=i===n-1; };
+    track.addEventListener("scroll",()=>requestAnimationFrame(upd),{passive:true});
+    prev.onclick=()=>track.scrollTo({left:(idx()-1)*track.clientWidth,behavior:"smooth"});
+    next.onclick=()=>track.scrollTo({left:(idx()+1)*track.clientWidth,behavior:"smooth"});
+    track.addEventListener("keydown",e=>{ if(e.key==="ArrowRight") next.click(); if(e.key==="ArrowLeft") prev.click(); });
+    upd();
+  }
+
+  async function finish(){
+    if(S.sending) return;
+    const open=S.data.posts.filter(p=>!(S.dec[p.id]||{}).status).length;
+    if(open && !confirm(open===1?"One post hasn’t been reviewed yet. Send anyway?":open+" posts haven’t been reviewed yet. Send anyway?")) return;
+    const btn=document.getElementById("sendBtn"); S.sending=true; btn.disabled=true; btn.textContent="Sending";
+    const items=S.data.posts.map(p=>{ const d=S.dec[p.id]||{}; return {post:p.id,title:p.title||"",date:p.date||"",type:p.type||"",status:d.status||"",note:d.note||"",ts:d.ts||""}; });
+    try{
+      await send({round:S.roundId, roundName:S.data.name||"", final:true, items});
+      document.getElementById("posts").innerHTML='<div class="done"><svg class="sparkle"><use href="#spk"/></svg><h2>Thank you, your review is in.</h2><p>Alyssa has your choices and notes. You can reopen this link anytime to change something.</p><button class="linkish" id="back">See the posts again</button></div>';
+      document.querySelector(".bar").style.display="none";
+      window.scrollTo(0,0);
+      document.getElementById("back").onclick=()=>location.reload();
+    }catch(e){
+      btn.disabled=false; btn.textContent="Send my review"; S.sending=false;
+      alert("Your review didn’t send. Check your connection and try again. Your choices are still saved on this device.");
+    }
+  }
+
+  window.addEventListener("hashchange",()=>location.reload());
+  if(!window.crypto || !crypto.subtle){ locked("Open this in a current browser","This private page needs a secure connection (https) and an up-to-date browser."); return; }
+  open();
+})();
+</script>
+</body>
+</html>
